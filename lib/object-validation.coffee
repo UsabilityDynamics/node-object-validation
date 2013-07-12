@@ -42,7 +42,7 @@ require( 'abstract' ).createModel ( model, prototype ) ->
     # @params schema {Object} Validation schema.
     # @returns {Object} Reduce result.
     keys: ( schema ) ->
-      result = model.engine().create( this, schema, options )
+      result = model.engine().create( this, schema )
 
       # Clean-up keys
       result.keys = utility.unique( result.keys )

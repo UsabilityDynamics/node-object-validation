@@ -1,7 +1,7 @@
 ###*
 * Object Validation
 *
-* -
+* Validation manager.
 *
 * @module object-validation
 * @author potanin@UD
@@ -10,22 +10,33 @@
 require( 'abstract' ).createModel ( model, prototype ) ->
 
   # Set JSON-Schema as the Engine
-  model.engine require( 'json-schema' ).validate
+  model.engine require( './engine' )
 
   # Add Utility shortcut
   utility = require( 'abstract' ).utility
 
   # Constructor Properties
   model.properties
-    utility: utility
-    reduce: utility.noop
-    validate: model.engine()
-    defaults: utility.defaults
+    validate: get: -> ( target, schema ) -> model::validate.call( target, schema )
+    reduce: get: -> ( target, schema ) -> model::validate.call( target, schema )
 
   # Instance Properties
   model.properties @prototype,
-    validate: ( schema ) -> model.validate( this, schema )
-    reduce: ( schema ) -> model.reduce( this, reduce )
+
+    # Validate
+    #
+    # @params schema {Object} Validation schema.
+    # @params options {Object} Validation options.
+    # @returns {Object} Validation result.
+    validate: ( schema, options ) ->
+      model.engine()( this, schema, options )
+
+    # Reduce
+    #
+    # @params schema {Object} Validation schema.
+    # @returns {Object} Reduce result.
+    reduce: ( schema ) ->
+      model.reduce( this, reduce )
 
   # Instantiation Handler
   model.defineInstance ( schema, options ) ->

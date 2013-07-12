@@ -15,15 +15,11 @@ module.exports = {
    */
   'before': function() {
 
-    // Dependancies
     require( 'should' );
 
+    module.createSimpleUser = function createSimpleUser() {
 
-    module.simple_user = function() {
-
-      var simple_user = {};
-
-      Object.defineProperties( simple_user, {
+      return Object.defineProperties( {}, {
         first: {
           value: 'Joe',
           enumerable: false
@@ -36,10 +32,9 @@ module.exports = {
         }
       });
 
-      return simple_user;
     };
 
-    module.user = function() {
+    module.createUser = function createSimpleUser() {
       return {
         "first": "Bob",
         "last": "McCarthy",
@@ -136,8 +131,8 @@ module.exports = {
 
       // Constructor tests
       validation.should.be.a( 'function' );
-      validation.should.have.property( 'defaults' );
-      validation.should.have.property( 'utility' );
+      validation.should.have.property( 'validate' );
+      validation.should.have.property( 'reduce' );
 
       // Inherited Abstract methods
       validation.should.have.property( 'create' );
@@ -157,10 +152,10 @@ module.exports = {
      */
     "handles success as expected": function() {
       var validation = require( '../' );
-      var _instance = validation.validate( module.user(), module.schema );
+      var instance = validation.validate( module.createUser(), module.schema );
 
-      _instance.should.have.property( "valid", true );
-      _instance.should.have.property( "errors" ).with.lengthOf( 0 );
+      instance.should.have.property( 'is_valid', true );
+      instance.should.have.property( "errors" ).with.lengthOf( 0 );
 
     },
 
@@ -171,18 +166,18 @@ module.exports = {
      */
     "handles failure as expected": function() {
       var validation = require( '../' );
-      var user = module.user();
+      var user = module.createUser();
 
       // Set the age to a value that is out of the schema's valid range
       user.age = 40;
 
-      var _instance = validation.validate( user, module.schema );
+      var instance = validation.validate( user, module.schema );
 
-      _instance.should.have.property( "valid", false );
-      _instance.should.have.property( "errors" ).with.lengthOf( 1 );
-      _instance.errors[0].should.have.property( "property", "age" );
-      //_instance.errors[0].should.have.property( "expected", 30 );
-      //_instance.errors[0].should.have.property( "actual", 40 );
+      instance.should.have.property( 'is_valid', false );
+      instance.should.have.property( "errors" ).with.lengthOf( 1 );
+      instance.errors[0].should.have.property( "property", "age" );
+      instance.errors[0].should.have.property( "expected", 30 );
+      instance.errors[0].should.have.property( "actual", 40 );
 
     },
 
@@ -194,7 +189,7 @@ module.exports = {
       return;
 
       var validation = require( '../' );
-      var _reduced = validation.reduce( module.user(), module.reduced_schema );
+      var _reduced = validation.reduce( module.createUser(), module.reduced_schema );
 
       //      _reduced.should.not.have.property( "age" );
       //      _reduced.should.not.have.property( "last" );
@@ -212,16 +207,16 @@ module.exports = {
     "simple user does not return enumerable properties": function() {
 
       var validation = require( '../' );
-      //var _simple_user = validation.validate( module.simple_user() );
+      var _createSimpleUser = validation.validate( module.createSimpleUser() );
 
-      //console.log(module.simple_user());
+      //console.log(module.createSimpleUser());
 
-      //_simple_user.should.have.property("first");
-      //_simple_user.should.have.property("last");
+      //_createSimpleUser.should.have.property("first");
+      //_createSimpleUser.should.have.property("last");
 
 
     }
 
-  },
+  }
 
 };

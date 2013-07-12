@@ -1,4 +1,6 @@
-The module is a wrapper for json-schema with convenience methods.
+The module is a wrapper for json-schema with convenience methods and improvements:
+
+  - Does not trigger target object's getters during validation.
 
 ## Module Methods
 

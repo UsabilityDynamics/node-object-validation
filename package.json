@@ -35,10 +35,10 @@
     "url": "https://github.com/UsabilityDynamics/object-validation/issues"
   },
   "dependencies": {
-    "abstract": "*",
-    "json-schema": "*"
+    "abstract": "*"
   },
   "devDependencies": {
+    "json-schema": "*",
     "Faker": "*",
     "mocha": "*",
     "should": "*"

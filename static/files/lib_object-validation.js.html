@@ -45,6 +45,8 @@
 
             <ul id="api-modules" class="apis modules">
             
+                <li><a href="../modules/engine.html">engine</a></li>
+            
                 <li><a href="../modules/object-validation.html">object-validation</a></li>
             
             </ul>
@@ -90,7 +92,7 @@
 /**
 * Object Validation
 *
-* -
+* Validation manager.
 *
 * @module object-validation
 * @author potanin@UD
@@ -101,20 +103,31 @@
 (function() {
   require(&#x27;abstract&#x27;).createModel(function(model, prototype) {
     var utility;
-    model.engine(require(&#x27;json-schema&#x27;).validate);
+    model.engine(require(&#x27;./engine&#x27;));
     utility = require(&#x27;abstract&#x27;).utility;
     model.properties({
-      utility: utility,
-      reduce: utility.noop,
-      validate: model.engine(),
-      defaults: utility.defaults
+      validate: {
+        get: function() {
+          return function(target, schema) {
+            return model.prototype.validate.call(target, schema);
+          };
+        }
+      },
+      reduce: {
+        get: function() {
+          return function(target, schema) {
+            return model.prototype.validate.call(target, schema);
+          };
+        }
+      }
     });
     model.properties(this.prototype, {
-      validate: function(schema) {
-        return model.validate(this, schema);
+      validate: function(schema, options) {
+        return model.engine()(this, schema, options);
       },
       reduce: function(schema) {
-        return model.reduce(this, reduce);
+        model.reduce(this, reduce);
+        return this;
       }
     });
     model.defineInstance(function(schema, options) {

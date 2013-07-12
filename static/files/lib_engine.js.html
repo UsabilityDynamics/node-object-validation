@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib/engine.js - Object Validation</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="http://a3d72a45d111006ec192-ec5b80a12b0b09b4d52373336afb4254.r80.cf1.rackcdn.com/usability-dynamics.png" title="Object Validation"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.0.1</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="../modules/engine.html">engine</a></li>
+            
+                <li><a href="../modules/object-validation.html">object-validation</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: lib/engine.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+ * Schema Validation
+ *
+ * Validators the target Object based on the Schema.
+ *
+ * Required JavaScript capabilities:
+ * - Array.isArray
+ * - Object.defineProperties
+ *
+ * @module object-validation
+ * @submodule engine
+ *
+ * @param target {Object}
+ * @param schema
+ * @param options {Object}
+ * @param options.validateFormats {Object}
+ * @param options.validateFormatsStrict {Object}
+ * @param options.validateFormatExtensions {Object}
+ *
+ * @author potanin@UD
+ * @date 6/15/13
+ *
+ * @return {{target: *, valid: boolean, errors: Array}}
+ */
+function Validator( target, schema, options ) {
+
+  if( !( this instanceof Validator ) ) {
+    return new Validator( target, schema, options );
+  }
+
+  // new Instance properties
+  Object.defineProperties( this, {
+    target: {
+      value: target || {},
+      enumerable: true
+    },
+    options: {
+      value: options || {},
+      enumerable: true
+    },
+    targetedProps: {
+      value: [],
+      enumerable: true,
+      writable: true
+    },
+    validatedProps: {
+      value: [],
+      enumerable: true,
+      writable: true
+    },
+    schema: {
+      value: schema || {},
+      enumerable: true
+    },
+    errors: {
+      value: [],
+      enumerable: true,
+      writable: true
+    }
+  });
+
+  // Start Validation
+  this.validateObject( this.target, this.schema, this.options, this.errors );
+
+  return {
+    object: this.targetedProps,
+    valid: !( this.errors.length ),
+    errors: this.errors
+  };
+
+}
+
+/**
+ * Prototypal Properties
+ *
+ */
+Object.defineProperties( Validator.prototype, {
+  messages: {
+    value: {
+      required: &quot;is required&quot;,
+      minLength: &quot;is too short (minimum is %{expected} characters)&quot;,
+      maxLength: &quot;is too long (maximum is %{expected} characters)&quot;,
+      pattern: &quot;invalid input&quot;,
+      minimum: &quot;must be greater than or equal to %{expected}&quot;,
+      maximum: &quot;must be less than or equal to %{expected}&quot;,
+      exclusiveMinimum: &quot;must be greater than %{expected}&quot;,
+      exclusiveMaximum: &quot;must be less than %{expected}&quot;,
+      divisibleBy: &quot;must be divisible by %{expected}&quot;,
+      minItems: &quot;must contain more than %{expected} items&quot;,
+      maxItems: &quot;must contain less than %{expected} items&quot;,
+      uniqueItems: &quot;must hold a unique set of values&quot;,
+      format: &quot;is not a valid %{expected}&quot;,
+      conform: &quot;must conform to given constraint&quot;,
+      type: &quot;must be of %{expected} type&quot;,
+      enum: &quot;must be present in given enumerator&quot;
+    },
+    enumerable: false,
+    writable: true
+  },
+  formats: {
+    value: {
+      &#x27;email&#x27;: /^((([a-z]|\d|[!#\$%&amp;&#x27;\*\+\-\/=\?\^_&#x60;{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&amp;&#x27;\*\+\-\/=\?\^_&#x60;{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i,
+      &#x27;ip-address&#x27;: /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/i,
+      &#x27;ipv6&#x27;: /^([0-9A-Fa-f]{1,4}:){7}[0-9A-Fa-f]{1,4}$/,
+      &#x27;date-time&#x27;: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:.\d{1,3})?Z$/,
+      &#x27;date&#x27;: /^\d{4}-\d{2}-\d{2}$/,
+      &#x27;time&#x27;: /^\d{2}:\d{2}:\d{2}$/,
+      &#x27;color&#x27;: /^#[a-z0-9]{6}|#[a-z0-9]{3}|(?:rgb\(\s*(?:[+-]?\d+%?)\s*,\s*(?:[+-]?\d+%?)\s*,\s*(?:[+-]?\d+%?)\s*\))aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|and yellow$/i,
+      //&#x27;style&#x27;:        (not supported)
+      //&#x27;phone&#x27;:        (not supported)
+      //&#x27;uri&#x27;:          (not supported)
+      &#x27;host-name&#x27;: /^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])/,
+      &#x27;utc-millisec&#x27;: {
+        test: function( value ) {
+          return typeof(value) === &#x27;number&#x27; &amp;&amp; value &gt;= 0;
+        }
+      },
+      &#x27;regex&#x27;: {
+        test: function( value ) {
+          try { new RegExp( value ) }
+          catch( e ) { return false }
+          return true;
+        }
+      }
+    },
+    enumerable: true,
+    writable: true
+  },
+  formatExtensions: {
+    value: {
+      &#x27;url&#x27;: /^(https?|ftp|git):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&amp;&#x27;\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&amp;&#x27;\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&amp;&#x27;\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&amp;&#x27;\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&amp;&#x27;\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i
+    },
+    enumerable: false,
+    writable: true
+  },
+  validateObject: {
+    value: function validateObject( object, schema, options, errors ) {
+      var self = this;
+      var props;
+      var allProps = Object.keys( object );
+
+      // see 5.2
+      if( schema.properties ) {
+        props = schema.properties;
+        for( var p in props ) {
+          if( props.hasOwnProperty( p ) ) {
+            this.targetedProps.push( p );
+
+            this.validateProperty( object, object[p], p, props[p], options, errors );
+          }
+        }
+      }
+
+      // see 5.3
+      if( schema.patternProperties ) {
+        props = schema.patternProperties;
+        for( var p in props ) {
+          if( props.hasOwnProperty( p ) ) {
+            var re = new RegExp( p );
+
+            // Find all object properties that are matching &#x60;re&#x60;
+            for( var k in object ) {
+              if( object.hasOwnProperty( k ) ) {
+                this.targetedProps.push( k );
+                if( re.exec( k ) !== null ) {
+                  Validator.property( object, object[k], p, props[p], options, errors );
+
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // see 5.4
+      if( schema.additionalProperties ) {
+        var i, l;
+
+        var unvisitedProps = allProps.filter( function( k ) {
+          return (this.targetedProps.indexOf( k ) &gt; 0);
+        });
+
+        if( schema.additionalProperties === false &amp;&amp; unvisitedProps.length &gt; 0 ) {
+          for( i = 0, l = unvisitedProps.length; i &lt; l; i++ ) {
+            error( &quot;additionalProperties&quot;, unvisitedProps[i], object[unvisitedProps[i]], false, errors );
+          }
+        }
+
+        else if( typeof schema.additionalProperties == &quot;object&quot; &amp;&amp; unvisitedProps.length &gt; 0 ) {
+          for( i = 0, l = unvisitedProps.length; i &lt; l; i++ ) {
+            validateProperty( object, object[unvisitedProps[i]], unvisitedProps[i], schema.unvisitedProperties, options, errors );
+          }
+        }
+      }
+
+    },
+    enumerable: true,
+    writable: false
+  },
+  validateProperty: {
+    value: function validateProperty( object, value, property, schema, options, errors ) {
+      var self = this;
+
+      var format, valid, spec, type;
+
+      function constrain( name, value, assert ) {
+        if( schema[name] !== undefined &amp;&amp; !assert( value, schema[name] ) ) {
+          self.error( name, property, value, schema, errors );
+        }
+      }
+
+      if( value === undefined ) {
+        if( schema.required &amp;&amp; schema.type !== &#x27;any&#x27; ) {
+          return this.error( &#x27;required&#x27;, property, undefined, schema, errors );
+        } else {
+          return;
+        }
+      }
+
+      if( value === &quot;&quot; ) {
+        if( schema.required &amp;&amp; schema.type === &#x27;string&#x27; ) {
+          return error( &#x27;required&#x27;, property, &quot;&quot;, schema, errors );
+        } else {
+          return;
+        }
+      }
+
+      if( schema.format &amp;&amp; options.validateFormats ) {
+        format = schema.format;
+
+        if( options.validateFormatExtensions ) { spec = validate.formatExtensions[format] }
+        if( !spec ) { spec = validate.formats[format] }
+        if( !spec ) {
+          if( options.validateFormatsStrict ) {
+            return error( &#x27;format&#x27;, property, value, schema, errors );
+          }
+        } else {
+          if( !spec.test( value ) ) {
+            return error( &#x27;format&#x27;, property, value, schema, errors );
+          }
+        }
+      }
+
+      if( schema[&#x27;enum&#x27;] &amp;&amp; schema[&#x27;enum&#x27;].indexOf( value ) === -1 ) {
+        error( &#x27;enum&#x27;, property, value, schema, errors );
+      }
+
+      // Dependencies (see 5.8)
+      if( typeof schema.dependencies === &#x27;string&#x27; &amp;&amp; object[schema.dependencies] === undefined ) {
+        error( &#x27;dependencies&#x27;, property, null, schema, errors );
+      }
+
+      if( Array.isArray( schema.dependencies ) ) {
+        for( var i = 0, l = schema.dependencies.length; i &lt; l; i++ ) {
+          if( object[schema.dependencies[i]] === undefined ) {
+            error( &#x27;dependencies&#x27;, property, null, schema, errors );
+          }
+        }
+      }
+
+      if( typeof schema.dependencies === &#x27;object&#x27; ) {
+        self.validateObject( object, schema.dependencies, options, errors );
+      }
+
+      this.checkType( value, schema.type, function( err, type ) {
+        if( err ) return error( &#x27;type&#x27;, property, typeof value, schema, errors );
+
+        constrain( &#x27;conform&#x27;, value, function( a, e ) {
+          return e( a )
+        });
+
+        switch( type || (Array.isArray( value ) ? &#x27;array&#x27; : typeof value) ) {
+          case &#x27;string&#x27;:
+            constrain( &#x27;minLength&#x27;, value.length, function( a, e ) {
+              return a &gt;= e
+            });
+
+            constrain( &#x27;maxLength&#x27;, value.length, function( a, e ) {
+              return a &lt;= e
+            });
+
+            constrain( &#x27;pattern&#x27;, value, function( a, e ) {
+              e = typeof e === &#x27;string&#x27; ? e = new RegExp( e ) : e;
+              return e.test( a )
+            });
+            break;
+
+          case &#x27;number&#x27;:
+            constrain( &#x27;minimum&#x27;, value, function( a, e ) {
+              return a &gt;= e
+            });
+            constrain( &#x27;maximum&#x27;, value, function( a, e ) {
+              return a &lt;= e
+            });
+            constrain( &#x27;exclusiveMinimum&#x27;, value, function( a, e ) {
+              return a &gt; e
+            });
+            constrain( &#x27;exclusiveMaximum&#x27;, value, function( a, e ) {
+              return a &lt; e
+            });
+            constrain( &#x27;divisibleBy&#x27;, value, function( a, e ) {
+              var multiplier = Math.max( (a - Math.floor( a )).toString().length - 2,
+                (e - Math.floor( e )).toString().length - 2 );
+              multiplier = multiplier &gt; 0 ? Math.pow( 10, multiplier ) : 1;
+              return (a * multiplier) % (e * multiplier) === 0
+            });
+            break;
+
+          case &#x27;array&#x27;:
+            constrain( &#x27;items&#x27;, value, function( a, e ) {
+              for( var i = 0, l = a.length; i &lt; l; i++ ) {
+                validateProperty( object, a[i], property, e, options, errors );
+              }
+              return true;
+            });
+            constrain( &#x27;minItems&#x27;, value, function( a, e ) {
+              return a.length &gt;= e
+            });
+            constrain( &#x27;maxItems&#x27;, value, function( a, e ) {
+              return a.length &lt;= e
+            });
+            constrain( &#x27;uniqueItems&#x27;, value, function( a ) {
+              var h = {};
+
+              for( var i = 0, l = a.length; i &lt; l; i++ ) {
+                var key = JSON.stringify( a[i] );
+                if( h[key] ) return false;
+                h[key] = true;
+              }
+
+              return true;
+            });
+            break;
+
+          case &#x27;object&#x27;:
+            // Recursive validation
+            if( schema.properties || schema.patternProperties || schema.additionalProperties ) {
+              self.validateObject( value, schema, options, errors );
+            }
+            break;
+
+        }
+
+      });
+
+    },
+    enumerable: true,
+    writable: false
+  },
+  checkType: {
+    value: function checkType( val, type, callback ) {
+      var result = false, types = Array.isArray( type ) ? type : [type];
+
+      // No type - no check
+      if( type === undefined ) return callback( null, type );
+
+      // Go through available types
+      // And fine first matching
+      for( var i = 0, l = types.length; i &lt; l; i++ ) {
+        type = types[i];
+        if( type === &#x27;string&#x27; ? typeof val === &#x27;string&#x27; : type === &#x27;array&#x27; ? Array.isArray( val ) :
+          type === &#x27;object&#x27; ? val &amp;&amp; typeof val === &#x27;object&#x27; &amp;&amp; !Array.isArray( val ) :
+            type === &#x27;number&#x27; ? typeof val === &#x27;number&#x27; : type === &#x27;integer&#x27; ? typeof val === &#x27;number&#x27; &amp;&amp; ~~val === val :
+              type === &#x27;null&#x27; ? val === null : type === &#x27;boolean&#x27; ? typeof val === &#x27;boolean&#x27; :
+                type === &#x27;function&#x27; ? typeof val === &#x27;function&#x27; : type === &#x27;any&#x27; ? typeof val !== &#x27;undefined&#x27; : false ) {
+          return callback( null, type );
+        }
+      }
+      ;
+
+      callback( true );
+    },
+    enumerable: true,
+    writable: false
+  },
+  error: {
+    value: function error( attribute, property, actual, schema, errors ) {
+
+      var lookup = {
+        expected: schema[attribute],
+        attribute: attribute,
+        property: property
+      };
+
+      var message = schema.messages &amp;&amp; schema.messages[attribute] || schema.message || this.messages[attribute] || &quot;no default message&quot;;
+
+      message = message.replace( /%\{([a-z]+)\}/ig, function( _, match ) {
+        return lookup[match.toLowerCase()] || &#x27;&#x27;;
+      });
+
+      errors.push({
+        attribute: attribute,
+        property: property,
+        expected: schema[attribute],
+        actual: actual,
+        message: message
+      });
+
+    },
+    enumerable: true,
+    writable: false
+  },
+});
+
+module.exports = Validator;
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

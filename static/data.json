@@ -3,10 +3,19 @@
         "name": "Object Validation",
         "description": "Object JSON Schema validation",
         "version": "0.0.1",
-        "url": "https://github.com/UsabilityDynamics/object-validation.io",
+        "url": "https://github.com/UsabilityDynamics/object-validation",
         "logo": "http://a3d72a45d111006ec192-ec5b80a12b0b09b4d52373336afb4254.r80.cf1.rackcdn.com/usability-dynamics.png"
     },
     "files": {
+        "lib/engine.js": {
+            "name": "lib/engine.js",
+            "modules": {
+                "engine": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "lib/object-validation.js": {
             "name": "lib/object-validation.js",
             "modules": {
@@ -20,19 +29,91 @@
     "modules": {
         "object-validation": {
             "name": "object-validation",
-            "submodules": {},
+            "submodules": {
+                "engine": 1
+            },
             "classes": {},
             "fors": {},
             "namespaces": {},
             "tag": "module",
             "file": "lib/object-validation.js",
             "line": 2,
-            "description": "Object Validation\n\n-",
+            "description": "Object Validation\n\nValidation manager.",
             "author": "potanin@UD",
             "is_constructor": 1
+        },
+        "engine": {
+            "name": "engine",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "object-validation",
+            "namespace": "",
+            "file": "lib/engine.js",
+            "line": 1,
+            "description": "Schema Validation\n\nValidators the target Object based on the Schema.\n\nRequired JavaScript capabilities:\n- Array.isArray\n- Object.defineProperties",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "schema",
+                    "description": ""
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "validateFormats",
+                            "description": "",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "validateFormatsStrict",
+                            "description": "",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "validateFormatExtensions",
+                            "description": "",
+                            "type": "Object"
+                        }
+                    ]
+                }
+            ],
+            "author": "potanin@UD",
+            "date": "6/15/13",
+            "return": {
+                "description": "}",
+                "type": "Target: *, valid: boolean, errors: Array"
+            }
         }
     },
     "classes": {},
-    "classitems": [],
-    "warnings": []
+    "classitems": [
+        {
+            "file": "lib/engine.js",
+            "line": 73,
+            "description": "Prototypal Properties",
+            "class": "",
+            "module": "object-validation",
+            "submodule": "engine"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: date",
+            "line": " lib/engine.js:1"
+        },
+        {
+            "message": "Missing item type\nPrototypal Properties",
+            "line": " lib/engine.js:73"
+        }
+    ]
 }

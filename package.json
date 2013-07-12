@@ -1,0 +1,50 @@
+{
+  "name": "object-validation",
+  "description": "Validate objects.",
+  "author": {
+    "name": "Usability Dynamics",
+    "email": "info@usabilitydynamics.com",
+    "url": "http://usabilitydynamics.com"
+  },
+  "contributors": [
+    {
+      "name": "Andy Potanin",
+      "email": "andy.potanin@usabilitydynamics.com",
+      "url": "http://usabilitydynamics.com"
+    },
+    {
+      "name": "Ivan McCarthy",
+      "email": "ivan.mccarthy@usabilitydynamics.com",
+      "url": "http://usabilitydynamics.com"
+    }
+  ],
+  "keywords": [
+    "object",
+    "emitter",
+    "activity",
+    "json",
+    "schema",
+    "validate"
+  ],
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/UsabilityDynamics/object-validation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/UsabilityDynamics/object-validation/issues"
+  },
+  "dependencies": {
+    "abstract": "*",
+    "json-schema": "*"
+  },
+  "devDependencies": {
+    "Faker": "*",
+    "mocha": "*",
+    "should": "*"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "readmeFilename": "Readme.md"
+}

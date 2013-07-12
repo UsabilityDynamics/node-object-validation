@@ -1,0 +1,38 @@
+{
+    "project": {
+        "name": "Object Validation",
+        "description": "Object JSON Schema validation",
+        "version": "0.0.1",
+        "url": "https://github.com/UsabilityDynamics/object-validation.io",
+        "logo": "http://a3d72a45d111006ec192-ec5b80a12b0b09b4d52373336afb4254.r80.cf1.rackcdn.com/usability-dynamics.png"
+    },
+    "files": {
+        "lib/object-validation.js": {
+            "name": "lib/object-validation.js",
+            "modules": {
+                "object-validation": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "object-validation": {
+            "name": "object-validation",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "lib/object-validation.js",
+            "line": 2,
+            "description": "Object Validation\n\n-",
+            "author": "potanin@UD",
+            "is_constructor": 1
+        }
+    },
+    "classes": {},
+    "classitems": [],
+    "warnings": []
+}

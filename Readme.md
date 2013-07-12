@@ -13,7 +13,7 @@ The module is a wrapper for json-schema with convenience methods and improvement
 Instance methods are available if the create() method was used to instantiate a new Object State.
 
   - validate( schema ): Validate against provided schema or default schema.
-  - is_valid: Getter for validation status.
+  - keys( schema ): Get array of absolute paths to property keys in current schema.
 
 ## Basic Usage
 

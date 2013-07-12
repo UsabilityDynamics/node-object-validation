@@ -17,6 +17,9 @@ module.exports = {
 
     require( 'should' );
 
+    // Cache Module
+    require( '../' );
+
     module.createSimpleUser = function createSimpleUser() {
 
       return Object.defineProperties( {}, {
@@ -116,7 +119,9 @@ module.exports = {
               minItems: 2
             }
           }
-
+        },
+        personality: {
+          type: 'string'
         }
 
       }
@@ -127,12 +132,12 @@ module.exports = {
   'Object Validation API': {
 
     'model has expected methods.': function() {
-      var validation = require( 'object-validation' );
+      var validation = require( '../' );
 
       // Constructor tests
       validation.should.be.a( 'function' );
       validation.should.have.property( 'validate' );
-      validation.should.have.property( 'reduce' );
+      validation.should.have.property( 'keys' );
 
       // Inherited Abstract methods
       validation.should.have.property( 'create' );
@@ -184,23 +189,16 @@ module.exports = {
     /**
      * Reduced object returns object based on reduced schema validation.
      */
-    "reduce method returns reduced object with schema applied": function() {
-
-      return;
-
+    "returns list of keys that were validated": function() {
       var validation = require( '../' );
-      var _reduced = validation.reduce( module.createUser(), module.reduced_schema );
+      var instance = validation.validate( module.createUser(), module.reduced_schema );
 
-      //      _reduced.should.not.have.property( "age" );
-      //      _reduced.should.not.have.property( "last" );
-      //      _reduced.education.should.not.have.property( "college" );
-
-      _reduced.should.have.property( "first" );
-      _reduced.should.have.property( "occupation" );
-      _reduced.should.have.property( "education" );
-      _reduced.education.skills.should.have.property( "technical" ).with.lengthOf(2);
-      _reduced.education.skills.should.have.property( "business" ).with.lengthOf(2);
-
+      instance.keys.should.be.a( 'object' );
+      instance.keys.should.have.property( 'length', 4 );
+      instance.keys[0].should.equal( 'first' );
+      instance.keys[1].should.equal( 'occupation' );
+      instance.keys[2].should.equal( 'education.college.skills' );
+      instance.keys[3].should.equal( 'personality' );
 
     },
 

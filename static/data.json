@@ -13,7 +13,9 @@
                 "engine": 1
             },
             "classes": {},
-            "fors": {},
+            "fors": {
+                "engine": 1
+            },
             "namespaces": {}
         },
         "lib/object-validation.js": {
@@ -32,8 +34,12 @@
             "submodules": {
                 "engine": 1
             },
-            "classes": {},
-            "fors": {},
+            "classes": {
+                "engine": 1
+            },
+            "fors": {
+                "engine": 1
+            },
             "namespaces": {},
             "tag": "module",
             "file": "lib/object-validation.js",
@@ -45,7 +51,9 @@
         "engine": {
             "name": "engine",
             "submodules": {},
-            "classes": {},
+            "classes": {
+                "engine": 1
+            },
             "fors": {},
             "is_submodule": 1,
             "namespaces": {},
@@ -62,7 +70,8 @@
                 },
                 {
                     "name": "schema",
-                    "description": ""
+                    "description": "",
+                    "type": "Object"
                 },
                 {
                     "name": "options",
@@ -95,13 +104,97 @@
             }
         }
     },
-    "classes": {},
+    "classes": {
+        "engine": {
+            "name": "engine",
+            "shortname": "engine",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "object-validation",
+            "submodule": "engine",
+            "namespace": ""
+        }
+    },
     "classitems": [
         {
             "file": "lib/engine.js",
-            "line": 73,
+            "line": 108,
             "description": "Prototypal Properties",
-            "class": "",
+            "class": "engine",
+            "module": "object-validation",
+            "submodule": "engine"
+        },
+        {
+            "file": "lib/engine.js",
+            "line": 235,
+            "description": "Validate Single Property",
+            "params": [
+                {
+                    "name": "object",
+                    "description": ""
+                },
+                {
+                    "name": "value",
+                    "description": ""
+                },
+                {
+                    "name": "property",
+                    "description": ""
+                },
+                {
+                    "name": "schema",
+                    "description": ""
+                },
+                {
+                    "name": "options",
+                    "description": ""
+                },
+                {
+                    "name": "errors",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "*"
+            },
+            "class": "engine",
+            "module": "object-validation",
+            "submodule": "engine"
+        },
+        {
+            "file": "lib/engine.js",
+            "line": 458,
+            "description": "Constructor Properties",
+            "class": "engine",
+            "module": "object-validation",
+            "submodule": "engine"
+        },
+        {
+            "file": "lib/engine.js",
+            "line": 464,
+            "params": [
+                {
+                    "name": "target",
+                    "description": ""
+                },
+                {
+                    "name": "schema",
+                    "description": ""
+                },
+                {
+                    "name": "options",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Validator"
+            },
+            "class": "engine",
             "module": "object-validation",
             "submodule": "engine"
         }
@@ -112,8 +205,28 @@
             "line": " lib/engine.js:1"
         },
         {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/engine.js:235"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/engine.js:464"
+        },
+        {
             "message": "Missing item type\nPrototypal Properties",
-            "line": " lib/engine.js:73"
+            "line": " lib/engine.js:108"
+        },
+        {
+            "message": "Missing item type\nValidate Single Property",
+            "line": " lib/engine.js:235"
+        },
+        {
+            "message": "Missing item type\nConstructor Properties",
+            "line": " lib/engine.js:458"
+        },
+        {
+            "message": "Missing item type",
+            "line": " lib/engine.js:464"
         }
     ]
 }

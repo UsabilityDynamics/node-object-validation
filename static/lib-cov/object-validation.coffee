@@ -18,7 +18,7 @@ require( 'abstract' ).createModel ( model, prototype ) ->
   # Constructor Properties
   model.properties
     validate: get: -> ( target, schema ) -> model::validate.call( target, schema )
-    reduce: get: -> ( target, schema ) -> model::validate.call( target, schema )
+    keys: get: -> ( target, schema ) -> model::keys.call( target, schema )
 
   # Instance Properties
   model.properties @prototype,
@@ -29,15 +29,23 @@ require( 'abstract' ).createModel ( model, prototype ) ->
     # @params options {Object} Validation options.
     # @returns {Object} Validation result.
     validate: ( schema, options ) ->
-      model.engine()( this, schema, options )
+      result = model.engine().create( this, schema, options )
 
-    # Reduce
+      # Clean-up keys
+      result.keys = utility.unique( result.keys )
+
+      # Return validation result
+      result;
+
+    # Return absolute validation keys
     #
     # @params schema {Object} Validation schema.
-    # @returns {Object} This instance.
-    reduce: ( schema ) ->
-      model.reduce( this, reduce )
-      this
+    # @returns {Object} Reduce result.
+    keys: ( schema ) ->
+      result = model.engine().create( this, schema, options )
+
+      # Clean-up keys
+      result.keys = utility.unique( result.keys )
 
   # Instantiation Handler
   model.defineInstance ( schema, options ) ->

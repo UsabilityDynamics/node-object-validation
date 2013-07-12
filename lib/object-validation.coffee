@@ -9,9 +9,6 @@
 ###
 require( 'abstract' ).createModel ( model, prototype ) ->
 
-  # Set JSON-Schema as the Engine
-  model.engine require( './engine' )
-
   # Add Utility shortcut
   utility = require( 'abstract' ).utility
 
@@ -29,7 +26,7 @@ require( 'abstract' ).createModel ( model, prototype ) ->
     # @params options {Object} Validation options.
     # @returns {Object} Validation result.
     validate: ( schema, options ) ->
-      result = model.engine().create( this, schema, options )
+      result = require( './engine' ).create( this, schema, options )
 
       # Clean-up keys
       result.keys = utility.unique( result.keys )
@@ -41,8 +38,8 @@ require( 'abstract' ).createModel ( model, prototype ) ->
     #
     # @params schema {Object} Validation schema.
     # @returns {Object} Reduce result.
-    keys: ( schema ) ->
-      result = model.engine().create( this, schema )
+    keys: ( schema, options ) ->
+      result = require( './engine' ).create( this, schema, options )
 
       # Clean-up keys
       result.keys = utility.unique( result.keys )
@@ -55,7 +52,7 @@ require( 'abstract' ).createModel ( model, prototype ) ->
     @set 'validation', options
 
     # Call Validation in context
-    model.engine( this, schema, options )
+    require( './engine' ).create( this, schema, options )
 
   # Export Abstrat Model as the module
   module.exports = model

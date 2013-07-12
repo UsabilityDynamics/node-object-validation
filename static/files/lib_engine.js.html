@@ -150,7 +150,7 @@ function Validator( target, schema, options ) {
       writable: true
     },
     schema: {
-      value: schema || {},
+      value: schema &amp;&amp; schema.properties ? schema : { type: &#x27;object&#x27;, properties: schema || {} },
       configurable: true,
       enumerable: false,
       writable: true

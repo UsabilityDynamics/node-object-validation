@@ -1,5 +1,6 @@
 {
   "name": "object-validation",
+  "version": "0.0.2",
   "description": "Validate objects.",
   "author": {
     "name": "Usability Dynamics",
@@ -26,7 +27,6 @@
     "schema",
     "validate"
   ],
-  "version": "0.0.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/UsabilityDynamics/object-validation.git"
@@ -35,7 +35,7 @@
     "url": "https://github.com/UsabilityDynamics/object-validation/issues"
   },
   "dependencies": {
-    "abstract": "*"
+    "abstract": "https://api.github.com/repos/UsabilityDynamics/abstract/tarball"
   },
   "devDependencies": {
     "json-schema": "*",

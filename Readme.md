@@ -5,6 +5,8 @@ The module is a wrapper for json-schema with convenience methods and improvement
 ## Module Methods
 
   - create( config ): Creates and returns new instance of Object Validation.
+  - validate( target, schema ): Creates and returns new instance of Object Validation.
+  - keys( target, schema ): Get keys to affected properties.
   - mixin( target ): Adds the prototypal methods of Object Validation to a target object.
   - set( key, value ): Set a setting to instance meta. To set default setting use 'defaults' as key.
   - get( key ): Get a meta value.

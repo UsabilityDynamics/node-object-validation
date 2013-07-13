@@ -35,7 +35,7 @@
     "url": "https://github.com/UsabilityDynamics/object-validation/issues"
   },
   "dependencies": {
-    "abstract": "https://api.github.com/repos/UsabilityDynamics/abstract/tarball"
+    "abstract": "*"
   },
   "devDependencies": {
     "json-schema": "*",

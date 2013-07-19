@@ -136,7 +136,7 @@
         return result.keys = utility.unique(result.keys);
       }
     });
-    model.defineInstance(function(schema, options) {
+    model.defineConstructor(function(schema, options) {
       this.set(&#x27;schema&#x27;, schema);
       this.set(&#x27;validation&#x27;, options);
       return model.engine(this, schema, options);

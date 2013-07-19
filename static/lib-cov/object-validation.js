@@ -44,7 +44,7 @@
         return result.keys = utility.unique(result.keys);
       }
     });
-    model.defineInstance(function(schema, options) {
+    model.defineConstructor(function(schema, options) {
       this.set('schema', schema);
       this.set('validation', options);
       return model.engine(this, schema, options);

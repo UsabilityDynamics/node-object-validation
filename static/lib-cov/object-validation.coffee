@@ -48,7 +48,7 @@ require( 'abstract' ).createModel ( model, prototype ) ->
       result.keys = utility.unique( result.keys )
 
   # Instantiation Handler
-  model.defineInstance ( schema, options ) ->
+  model.defineConstructor ( schema, options ) ->
 
     # Set Schema and Options
     @set 'schema', schema

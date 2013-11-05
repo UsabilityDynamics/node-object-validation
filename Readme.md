@@ -18,8 +18,33 @@ Instance methods are available if the create() method was used to instantiate a 
   - keys( schema ): Get array of absolute paths to property keys in current schema.
 
 ## Basic Usage
+The example below will trigger a failure because the tested object does not have the required "name" field.
 
-## Advanced Usage
+```javascript
+var validate = require( 'object-validation' ).validate;
+
+var schema = {
+  name: {
+    required: true
+  },
+  age: {
+    format: "number",
+    required: true
+  }
+}
+
+// Will fail because missing "age"
+console.log( validate({
+  "name": "John Smith"
+}, schema ).is_valid );
+
+// Will validate
+console.log( validate({
+  "name": "John Smith",
+  "age": 30
+}, schema ).is_valid );
+
+```
 
 ## License
 

@@ -1,7 +1,8 @@
 {
   "name": "object-validation",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Validate objects.",
+  "main": "lib/object-validation.js",
   "author": {
     "name": "Usability Dynamics",
     "email": "info@usabilitydynamics.com",
@@ -29,15 +30,22 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/UsabilityDynamics/object-validation.git"
+    "url": "https://github.com/UsabilityDynamics/node-object-validation.git"
   },
   "bugs": {
-    "url": "https://github.com/UsabilityDynamics/object-validation/issues"
+    "url": "https://github.com/UsabilityDynamics/node-object-validation/issues"
   },
   "dependencies": {
     "abstract": "*"
   },
   "devDependencies": {
+    "grunt-markdown": "~0.4.0",
+    "grunt-contrib-clean": "*",
+    "grunt-mocha-cli": "~1.3.0",
+    "grunt-contrib-yuidoc": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-jscoverage": "0.0.3",
+    "grunt": "~0.4.1",
     "json-schema": "*",
     "Faker": "*",
     "mocha": "*",

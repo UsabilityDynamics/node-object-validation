@@ -1,5 +1,5 @@
 /**
- * Node.js Module Build
+ * Node.js Simple Module Build
  *
  * @author potanin@UD
  * @version 0.0.2

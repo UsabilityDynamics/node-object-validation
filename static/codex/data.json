@@ -1,0 +1,232 @@
+{
+    "project": {
+        "name": "object-validation",
+        "description": "Validate objects.",
+        "version": "0.0.3",
+        "url": "",
+        "logo": "http://media.usabilitydynamics.com/logo.png"
+    },
+    "files": {
+        "lib/engine.js": {
+            "name": "lib/engine.js",
+            "modules": {
+                "engine": 1
+            },
+            "classes": {},
+            "fors": {
+                "engine": 1
+            },
+            "namespaces": {}
+        },
+        "lib/object-validation.js": {
+            "name": "lib/object-validation.js",
+            "modules": {
+                "object-validation": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "object-validation": {
+            "name": "object-validation",
+            "submodules": {
+                "engine": 1
+            },
+            "classes": {
+                "engine": 1
+            },
+            "fors": {
+                "engine": 1
+            },
+            "namespaces": {},
+            "tag": "module",
+            "file": "lib/object-validation.js",
+            "line": 2,
+            "description": "Object Validation\n\nValidation manager.",
+            "author": "potanin@UD",
+            "is_constructor": 1
+        },
+        "engine": {
+            "name": "engine",
+            "submodules": {},
+            "classes": {
+                "engine": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "object-validation",
+            "namespace": "",
+            "file": "lib/engine.js",
+            "line": 1,
+            "description": "Schema Validation\n\nValidators the target Object based on the Schema.\n\nRequired JavaScript capabilities:\n- Array.isArray\n- Object.defineProperties",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "schema",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "validateFormats",
+                            "description": "",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "validateFormatsStrict",
+                            "description": "",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "validateFormatExtensions",
+                            "description": "",
+                            "type": "Object"
+                        }
+                    ]
+                }
+            ],
+            "author": "potanin@UD",
+            "date": "6/15/13",
+            "return": {
+                "description": "}",
+                "type": "Target: *, valid: boolean, errors: Array"
+            }
+        }
+    },
+    "classes": {
+        "engine": {
+            "name": "engine",
+            "shortname": "engine",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "object-validation",
+            "submodule": "engine",
+            "namespace": ""
+        }
+    },
+    "classitems": [
+        {
+            "file": "lib/engine.js",
+            "line": 108,
+            "description": "Prototypal Properties",
+            "class": "engine",
+            "module": "object-validation",
+            "submodule": "engine"
+        },
+        {
+            "file": "lib/engine.js",
+            "line": 235,
+            "description": "Validate Single Property",
+            "params": [
+                {
+                    "name": "object",
+                    "description": ""
+                },
+                {
+                    "name": "value",
+                    "description": ""
+                },
+                {
+                    "name": "property",
+                    "description": ""
+                },
+                {
+                    "name": "schema",
+                    "description": ""
+                },
+                {
+                    "name": "options",
+                    "description": ""
+                },
+                {
+                    "name": "errors",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "*"
+            },
+            "class": "engine",
+            "module": "object-validation",
+            "submodule": "engine"
+        },
+        {
+            "file": "lib/engine.js",
+            "line": 458,
+            "description": "Constructor Properties",
+            "class": "engine",
+            "module": "object-validation",
+            "submodule": "engine"
+        },
+        {
+            "file": "lib/engine.js",
+            "line": 464,
+            "params": [
+                {
+                    "name": "target",
+                    "description": ""
+                },
+                {
+                    "name": "schema",
+                    "description": ""
+                },
+                {
+                    "name": "options",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Validator"
+            },
+            "class": "engine",
+            "module": "object-validation",
+            "submodule": "engine"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: date",
+            "line": " lib/engine.js:1"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/engine.js:235"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " lib/engine.js:464"
+        },
+        {
+            "message": "Missing item type\nPrototypal Properties",
+            "line": " lib/engine.js:108"
+        },
+        {
+            "message": "Missing item type\nValidate Single Property",
+            "line": " lib/engine.js:235"
+        },
+        {
+            "message": "Missing item type\nConstructor Properties",
+            "line": " lib/engine.js:458"
+        },
+        {
+            "message": "Missing item type",
+            "line": " lib/engine.js:464"
+        }
+    ]
+}

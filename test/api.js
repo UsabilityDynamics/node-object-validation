@@ -18,7 +18,7 @@ module.exports = {
     require( 'should' );
 
     // Cache Module
-    require( '../' );
+    require( '.' );
 
     module.createSimpleUser = function createSimpleUser() {
 
@@ -132,7 +132,7 @@ module.exports = {
   'Object Validation API': {
 
     'model has expected methods.': function() {
-      var validation = require( '../' );
+      var validation = require( '.' );
 
       // Constructor tests
       // validation.should.be.a( 'function' );
@@ -156,7 +156,7 @@ module.exports = {
      * @author mccarthy@UD
      */
     "handles success as expected": function() {
-      var validation = require( '../' );
+      var validation = require( '.' );
       var instance = validation.validate( module.createUser(), module.schema );
 
       instance.should.have.property( 'is_valid', true );
@@ -170,7 +170,7 @@ module.exports = {
      * @author mccarthy@UD
      */
     "handles failure as expected": function() {
-      var validation = require( '../' );
+      var validation = require( '.' );
       var user = module.createUser();
 
       // Set the age to a value that is out of the schema's valid range
@@ -190,7 +190,7 @@ module.exports = {
      * Reduced object returns object based on reduced schema validation.
      */
     "returns list of keys that were validated": function() {
-      var validation = require( '../' );
+      var validation = require( '.' );
       var instance = validation.validate( module.createUser(), module.reduced_schema );
 
       // instance.keys.should.be.a( 'object' );
@@ -204,7 +204,7 @@ module.exports = {
 
     "simple user does not return enumerable properties": function() {
 
-      var validation = require( '../' );
+      var validation = require( '.' );
       var _createSimpleUser = validation.validate( module.createSimpleUser() );
 
       //console.log(module.createSimpleUser());
